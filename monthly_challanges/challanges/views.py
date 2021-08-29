@@ -1,10 +1,10 @@
 from django.http.response import (
-    HttpResponse,
-    HttpResponseNotFound,
+    Http404,
     HttpResponseRedirect,
 )
 from django.shortcuts import render
 from django.urls import reverse
+
 
 challanges = {
     "january": "Learn django 30 min every day",
@@ -18,36 +18,31 @@ challanges = {
     "september": "Some challange for Septmeber",
     "october": "Some challange for October",
     "november": "Some challange for November",
-    "december": "Some challange for December",
+    "december": None,
 }
 
-INVALID_MONTH_RESPONSE = HttpResponseNotFound("<h1>Invalid month</h1>")
 
+def months_list(request):
+    page_data = {
+        "months": list(challanges.keys()),
+    }
 
-def months_list(requet):
-    months_list = []
-
-    months_list.append("<ui>")
-
-    for month in challanges.keys():
-        month_path = reverse("month-challange", args=[month])
-
-        months_list.append("<li>")
-        months_list.append(f'<a href="{month_path}">{month.capitalize()}</a>')
-        months_list.append("</li>")
-
-    months_list.append("</ui>")
-
-    response_data = "".join(months_list)
-
-    return HttpResponse(response_data)
+    return render(request, "challanges/index.html", page_data)
 
 
 def monthly_challange(request, month):
-    challange = challanges.get(month.lower(), INVALID_MONTH_RESPONSE)
-    response = f"<h1>{challange}</h1>"
 
-    return HttpResponse(response)
+    if month not in challanges.keys():
+        raise Http404("Invalid month!")
+
+    challange = challanges.get(month.lower())
+
+    page_data = {
+        "month": month,
+        "challange": challange,
+    }
+
+    return render(request, "challanges/challange.html", page_data)
 
 
 def monthly_challange_by_number(request, month):
@@ -57,4 +52,4 @@ def monthly_challange_by_number(request, month):
 
         return HttpResponseRedirect(redirect_path)
     except IndexError:
-        return HttpResponse(INVALID_MONTH_RESPONSE)
+        raise Http404("Invalid month!")

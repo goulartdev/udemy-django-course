@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static 'challanges/challange.css' %}">
+  <link rel="stylesheet" href="{% static 'challanges/includes/header.css' %}">
+{% endblock css_files %}
+
+
+{% block content %}
+
+  {% include 'challanges/includes/header.html' %}
+
+  <div class="challange-panel">
+    <h1>{{ month|title }} Challange</h1>
+
+    {% if challange %}
+      <h2>{{ challange }}</h2>
+    {% else %}
+      <p class="fallback">No challange for {{ month|title }}</p> 
+    {% endif %}  
+  </div>
+  
+
+{% endblock content %}
