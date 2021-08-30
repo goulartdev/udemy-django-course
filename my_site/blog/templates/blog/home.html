@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static 'blog/css/includes/post-card.css' %}">
+  <link rel="stylesheet" href="{% static 'blog/css/home.css' %}">
+{% endblock css_files %}
+
+{% block page_title %}{{ profile.name }}'s Blog{% endblock page_title %}
+
+{% block content %}
+
+  <section id="welcome">
+    <header>
+      <img src="{% static 'blog/images/profile.jpg' %}" alt="{{ profile.shortname }} - the author of this blog">
+      <h2>{{ profile.name }}'s Blog</h2>
+    </header>
+    <p>{{ profile.welcome }}</p>
+  </section>
+
+  <section id="latest-posts">
+    <h2>My Latest Thoughts</h2>
+    <ul>
+      {% for post in posts%}
+        <li>
+          {% include 'blog/includes/post-card.html' %}
+        </li>
+      {% endfor %}
+    </ul>
+    <div class="all-posts">
+      <a href="{% url 'all_posts' %}">All Posts</a>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2>What I do</h2>
+    <p>{{ profile.about }}</p>
+  </section>
+  
+{% endblock content %}
