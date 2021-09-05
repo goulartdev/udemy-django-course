@@ -1,0 +1,24 @@
+
+.books-list .book-list-header {
+  font-weight: bold;
+}
+
+.books-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.books-list ul li {
+  border-bottom: 1px solid #bbb;
+  padding: 5px;
+  transition: background-color 0.3s;
+}
+
+.books-list ul li:last-child {
+  border-bottom: none;
+}
+
+.books-list ul li:hover {
+  background-color: rgb(73, 117, 73);
+}

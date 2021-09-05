@@ -1,0 +1,20 @@
+#home-content {
+  width: 60vw;
+  min-width: 1100px;
+  display: flex;
+  flex-direction: column;
+}
+
+#home-content h1 {
+  margin-top: 0px;
+}
+
+
+#home-content hr {
+  width: 100%;
+}
+
+#home-content .books-list {
+  margin: 20px;
+  margin-bottom: 0px;
+}

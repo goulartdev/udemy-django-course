@@ -1,0 +1,21 @@
+{% extends 'book_outlet/base.html' %}
+{% load static %}
+
+{% block page_styles %}
+  <link rel="stylesheet" href="{% static 'book_outlet/css/home.css' %}">
+  <link rel="stylesheet" href="{% static 'book_outlet/css/includes/books-list.css' %}">
+  <link rel="stylesheet" href="{% static 'book_outlet/css/includes/books-list-item.css' %}">
+  <link rel="stylesheet" href="{% static 'book_outlet/css/includes/rating.css' %}">
+{% endblock page_styles %}
+
+{% block title %}All Books{% endblock title %}
+
+{% block page_content %}
+
+  <div id="home-content">
+    <h1>All Books</h1>
+    <hr>
+    {% include 'book_outlet/includes/books_list.html' %}
+  </div>
+
+{% endblock page_content %}

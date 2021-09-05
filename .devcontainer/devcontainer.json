@@ -1,13 +1,8 @@
 {
-	"name": "udemy-django",
-	"build": {
-		"dockerfile": "Dockerfile",
-		"context": "..",
-		"args": { 
-			"VARIANT": "3.9",
-			"NODE_VERSION": "none"
-		}
-	},
+	"name": "Udemy Django",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "backend",
+	"workspaceFolder": "/workspace",
 
 	"settings": { 
 		"python.pythonPath": "/usr/local/bin/python",

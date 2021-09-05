@@ -1,0 +1,30 @@
+#book-detail {
+  display: flex;
+  flex-direction: row;
+  width: 60vw;
+  max-width: 1100px;
+}
+
+#book-detail picture {
+  width: 300px;
+  min-height: 400px;
+}
+
+#book-detail .book-info {
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+}
+
+#book-detail .book-info h1 {
+  margin: 0;
+}
+
+#book-detail .book-info h2 {
+  margin-top: 5px;
+  font-size: 15px;
+}
+
+#book-detail .book-info p {
+  text-align: justify;
+}

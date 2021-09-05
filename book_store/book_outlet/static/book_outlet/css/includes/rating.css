@@ -1,0 +1,12 @@
+.book-rating { 
+  width: 80px;
+  display: flex;
+}
+
+.book-rating .star { 
+  color: #d7d3ce;
+}
+
+.book-rating .star-on { 
+  color: #fcba03;
+}

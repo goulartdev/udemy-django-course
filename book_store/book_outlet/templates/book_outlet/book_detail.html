@@ -1,20 +1,35 @@
-{% extends 'base.html' %}
+{% extends 'book_outlet/base.html' %}
+{% load static %}
+
+{% block page_styles %}
+  <link rel="stylesheet" href="{% static 'book_outlet/css/book-detail.css' %}">
+  <link rel="stylesheet" href="{% static 'book_outlet/css/includes/rating.css' %}">
+{% endblock page_styles %}
 
 {% block title %}{{ title }}{% endblock title %}
 
-{% block content %}
-  <h1>{{ title }}</h1>
-  <h2>{{ author }}</h2>
-  <p>
-    The book has a rating of {{ rating }}
-    {% if is_bestselling %}
-      and is a bestseller.
-    {% else %}
-      but isn't a bestseller.
-    {% endif %}
-  </p>
+{% block page_content %}
+  <div id="book-detail">
+    <picture>
+    </picture>
+    <div class="book-info">
+      <h1>
+        {{ title }}{% if is_bestseller %}🔥{% endif %}
+      </h1>
 
-  <br/>
+      <h2>
+        by <a href="{{ author.get_absolute_url }}">{{ author }}</a>
+      </h2>
+      
+      {% include 'book_outlet/includes/rating.html' %}
+      
+      <h3>Price: ${{ price|floatformat:2 }}</h3>
 
-  <a href="{% url 'books_list' %}">Back to list</a>
-{% endblock content %}
+      <p>{{ description|linebreaks }}</p>
+
+      <div class="back-home">
+        <a href="{% url 'home' %}">Back to home</a>
+      </div>
+    </div>
+  </div>
+{% endblock page_content %}

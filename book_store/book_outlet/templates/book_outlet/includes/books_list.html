@@ -1,0 +1,17 @@
+<div class="books-list">
+  <ul>
+    <li>
+      <div class="book-list-header book-list-item">
+        <div class="bestseller"></div>
+        <div class="title">Title</div>
+        <div class="author">Author</div>
+        <div class="book-rating">Rating</div>
+      </div>
+    </li>
+    {% for book in books %}
+      <li>
+        {% include 'book_outlet/includes/books_list_item.html' %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>

@@ -1,0 +1,30 @@
+.book-list-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px
+}
+
+.book-list-item a {
+  text-decoration: none;
+}
+
+.book-list-item .bestseller { 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 10px;
+  color: #fcba03;
+}
+
+.book-list-item .title { 
+  flex: 3;
+}
+
+.book-list-item .author { 
+  flex: 1;
+}
+
+.book-list-item .book-rating { 
+  width: 80px;
+}

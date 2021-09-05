@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Book Outlet{% endblock title %}
+
+{% block app_styles %}
+  <link rel="stylesheet" href="{% static 'book_outlet/css/base.css' %}">
+  {% block page_styles %}
+
+  {% endblock page_styles %}
+{% endblock app_styles %}
+
+{% block content %}
+  <div id="book-outlet-page">
+    <div class="content-panel">
+      {% block page_content %}{% endblock page_content %}
+    </div>
+  </div>
+{% endblock content %}
