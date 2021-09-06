@@ -1,0 +1,14 @@
+.post-tags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 5px
+}
+
+.post-tags span {
+  color: white;
+  font-weight: bold;
+  background-color: #e48900;
+  padding: 0 5px;
+  border-radius: 5px;
+}

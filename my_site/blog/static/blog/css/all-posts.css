@@ -1,5 +1,6 @@
 #all-posts {
-  margin: 7rem auto;
+  margin: auto;
+  padding: 7rem 0;
   width: 90%;
   max-width: 60rem;
 }
@@ -17,17 +18,4 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
   gap: 1.5rem;
-}
-
-.post-card img {
-  width: 7rem;
-  height: 7rem;
-}
-
-.post-card a {
-  height: 22rem;
-  transform-origin: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  border-radius: 12px;
-  background-color: #3f4142;
 }

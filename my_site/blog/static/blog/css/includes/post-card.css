@@ -7,37 +7,25 @@
   border-radius: 12px;
   transition: all 0.2s ease;
   background-color: #3f4142;
+  padding: 1rem;
 }
 
 .post-card:hover {
   transform: scale(1.1);
-  background-color: #34623c;
 }
 
 .post-card a {
   text-decoration: none;
-   padding: 1rem;
+  flex-grow: 1;
 }
 
 .post-card img {
-  width: 5rem;
-  height: 5rem;
+  width: 7rem;
+  height: 7rem;
   object-fit: cover;
   border-radius: 50%;
 }
 
 .post-card h3 {
-  margin: 0.25rem 0;
+  margin: 0.5rem 0;
 }
-
-/* .post-card time {
-  color: #666666;
-  margin: 0.25rem;
-  font-style: italic;
-  font-size: 0.85rem;
-}
-
-.post-card:hover time,
-.post-card:active time {
-  color: white;
-} */
