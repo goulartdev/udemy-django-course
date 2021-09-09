@@ -1,22 +1,47 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.views import View
 
 from .forms import ReviewForm
 
 
-def review(request):
+class ReviewView(View):
+    def get(self, request):
+        form = ReviewForm()
 
-    if request.method == "POST":
+        return render(request, "reviews/review.html", {"form": form})
+
+    def post(self, request):
         form = ReviewForm(request.POST)
 
         if form.is_valid():
-            print(form.cleaned_data)
+            form.save()
             return HttpResponseRedirect("/thank-you")
 
-    else:
-        form = ReviewForm()
 
-    return render(request, "reviews/review.html", {"form": form})
+# def review(request):
+
+#     if request.method == "POST":
+#         form = ReviewForm(request.POST)
+
+#         # to update an existing entity
+#         # existing = Review.objects.get(pk=pk)
+#         # form = ReviewForm(request.POST, instance=existing)
+
+#         if form.is_valid():
+#             # when using Form
+#             # new_review = Review(**form.cleaned_data)
+#             # new_review.save()
+
+#             # when using ModelFOrm
+#             form.save()
+
+#             return HttpResponseRedirect("/thank-you")
+
+#     else:
+#         form = ReviewForm()
+
+#     return render(request, "reviews/review.html", {"form": form})
 
 
 def thank_you(request):
