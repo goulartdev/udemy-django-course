@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{% static 'reviews/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'reviews/includes/input.css' %}">
+{% endblock styles %}
+
+{% block title %}Your Review{% endblock title %}
+
+{% block content %}
+  <form action="/" method="POST">
+    {% csrf_token %}
+
+    {% for field in form %}
+      {% include 'reviews/includes/input.html' %}
+    {% endfor %}
+    
+    <button>Send</button>
+  </form>
+
+{% endblock content %}
