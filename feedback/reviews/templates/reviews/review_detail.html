@@ -16,5 +16,20 @@
       <label for="username">Review: <label>
       <span>{{ review.review_text }}</span>
     </div>
+
+    {% if is_favorite %}
+
+      <p>This is my favorite review</p>
+
+    {% else %}
+
+      <form action="{% url 'favorite-review' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="review_id" value="{{ review.id }}">
+        <button>Favorite</button>
+      </form>
+
+    {% endif %}
+
   </section>
 {% endblock content %}

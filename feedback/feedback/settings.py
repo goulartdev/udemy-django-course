@@ -126,6 +126,9 @@ STATIC_URL = "/static/"
 MEDIA_ROOT = BASE_DIR / "uploads"
 MEDIA_URL = "/user-media/"
 
+# in seconds, default of 2 weeks
+# SESSION_COOKIE_AGE =
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
