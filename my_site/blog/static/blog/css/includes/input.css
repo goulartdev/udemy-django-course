@@ -1,0 +1,57 @@
+.form-control {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.form-control input,
+.form-control textarea {
+  display: block;
+  font: inherit;
+  padding: 0.25rem;
+  background-color: #3d3d3d;
+  border-radius: 4px;
+  border: 1px solid #766e61;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.form-control textarea {
+  max-height: 10rem;
+}
+
+.form-control input:focus,
+.form-control textarea:focus {
+  outline: none;
+  background-color: #090909;
+  border-color: #34623c;
+}
+
+.form-control label {
+  display: block;
+  font-weight: bold;
+  margin: 0.5rem 0 0.2rem 0;
+}
+
+.form-control .errorlist {
+  list-style: none;
+  margin: 0;
+  margin-top: 0.5rem;
+  padding: 0;
+  color: #680000;
+  font-weight: bold;
+}
+
+.form-control .error-list li{
+  margin-bottom: 0.5rem;
+}
+
+.form-control.invalid input,
+.form-control.invalid textarea {
+  border-color: #680000;
+}
+
+.form-control.invalid label {
+  color: #680000;
+}

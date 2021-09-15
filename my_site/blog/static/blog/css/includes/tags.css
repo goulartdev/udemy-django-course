@@ -5,10 +5,16 @@
   gap: 5px
 }
 
-.post-tags span {
+.post-tags a {
+  text-decoration: none;
   color: white;
   font-weight: bold;
   background-color: #e48900;
   padding: 0 5px;
   border-radius: 5px;
+  transition: all 0.2s ease;
+}
+
+.post-tags a:hover {
+  background-color: #fa9601;
 }

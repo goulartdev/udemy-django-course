@@ -1,59 +1,125 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Blog, Post
+from django.http.response import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls.base import reverse
+from django.views.generic import CreateView, ListView
+from django.views import View
+from django.views.generic.detail import DetailView
 
-profile = {
-    "name": "Djonathan",
-    "shortname": "Dj",
-    "welcome": "Hi, I am Djonathan and I love to blog about tech and the world!",
-    "about": """
-        I Love Programming, I love to help others and I enjoy exploring new
-        technologies in generel.
-
-        My goal is to keep on growing as a developer - and if I could help you
-        do the same, I'd be very happy!
-    """,
-}
+from .models import Post, PostComment, Tag
+from .forms import AddCommentForm
 
 LATEST_POSTS_LIMIT = 3
 
 
-def get_blog():
-    return get_object_or_404(Blog)
+class Home(ListView):
+    template_name = "blog/home.html"
+    model = Post
+    context_object_name = "posts"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        data = queryset[:LATEST_POSTS_LIMIT]
+
+        return data
 
 
-def home(request):
-    latest_posts = Post.objects.all()[:LATEST_POSTS_LIMIT]
-    blog = get_blog()
+class AllPostsView(ListView):
+    template_name = "blog/posts-list.html"
+    model = Post
+    context_object_name = "posts"
 
-    page_data = {
-        "blog": blog,
-        "posts": latest_posts,
-    }
-
-    return render(request, "blog/home.html", page_data)
-
-
-def all_posts(request):
-    posts = Post.objects.all()
-    blog = get_blog()
-
-    page_data = {
-        "blog": blog,
-        "posts": posts,
-    }
-
-    return render(request, "blog/all-posts.html", page_data)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = "All My Posts"
+        return context
 
 
-def post_detail(request, slug):
-    post = get_object_or_404(Post, slug=slug)
-    tags = post.tags.all()
-    blog = get_blog()
+class PostDetailView(View):
+    template_name = "blog/post-detail.html"
+    model = Post
+    context_object_name = "post"
 
-    page_data = {
-        "blog": blog,
-        "post": post,
-        "tags": tags,
-    }
+    def get(self, request, slug):
+        context = self.get_context(request, slug, AddCommentForm())
 
-    return render(request, "blog/post-detail.html", page_data)
+        return render(request, "blog/post-detail.html", context)
+
+    def post(self, request, slug):
+        post = get_object_or_404(Post, slug=slug)
+        comment_form = AddCommentForm(request.POST)
+
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.post = post
+            comment.save()
+
+            return HttpResponseRedirect(reverse("post_detail", args=[slug]))
+
+        context = self.get_context(request, slug, comment_form)
+
+        return render(request, "blog/post-detail.html", context)
+
+    def get_context(self, request, slug, comment_form):
+        post = get_object_or_404(Post, slug=slug)
+
+        return {
+            "post": post,
+            "is_marked": post.id in request.session.get("bookmarks", []),
+            "tags": post.tags.all(),
+            "comments": post.comments.all(),
+            "form": comment_form,
+        }
+
+
+class AddCommentView(CreateView):
+    template_name = "blog/post-detail.html"
+    model = PostComment
+    form_class = AddCommentForm
+
+    def get_success_url(self):
+        return reverse("post_detail", args=[self.object.post.slug])
+
+
+class BookmarkView(View):
+    def post(self, request):
+        post_id = request.POST["post_id"]
+        post = get_object_or_404(Post, pk=post_id)
+
+        bookmarks = request.session.get("bookmarks", [])
+
+        if post.id in bookmarks:
+            bookmarks.remove(post.id)
+        else:
+            bookmarks.append(post.id)
+
+        request.session["bookmarks"] = bookmarks
+
+        return HttpResponseRedirect(reverse("post_detail", args=[post.slug]))
+
+
+class TagView(DetailView):
+    template_name = "blog/posts-list.html"
+    model = Tag
+    context_object_name = "tag"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["page_title"] = f"{self.object.caption} Posts"
+        context["posts"] = self.object.posts.all()
+
+        return context
+
+
+class MyBookmarksView(View):
+    template_name = "blog/posts-list.html"
+
+    def get(self, request):
+        context = {"page_title": "My Bookmarks", "posts": []}
+
+        bookmarks = request.session.get("bookmarks")
+
+        if bookmarks:
+            posts = Post.objects.filter(id__in=bookmarks)
+            context["posts"] = posts
+
+        return render(request, self.template_name, context)

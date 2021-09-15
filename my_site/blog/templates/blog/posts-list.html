@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css_files %}
+  <link rel="stylesheet" href="{% static 'blog/css/includes/post-card.css' %}">
+  <link rel="stylesheet" href="{% static 'blog/css/includes/tags.css' %}">
+  <link rel="stylesheet" href="{% static 'blog/css/posts-list.css' %}">
+{% endblock css_files %}
+
+{% block page_title %}{{ page_title|title }}{% endblock page_title %}
+
+{% block content %}
+  <main id="posts-list">
+    <section>
+      <h2>{{ page_title|title }}</h2>
+      <ul>
+        {% for post in posts %}
+          <li>
+            {% include 'blog/includes/post-card.html' with tags=post.tags.all %}
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  </main>
+{% endblock content %}
+
+

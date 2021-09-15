@@ -1,42 +1,75 @@
 #post-detail {
-  padding-top: 8rem;
+  padding-top: 6rem;
   padding-bottom: 2rem;
 }
 
-#post-detail header {
-  width: 90%;
-  max-width: 70rem;
+#post-content,
+#post-comments,
+#post-header,
+#comment-error  {
+  width: 60rem;
+  padding: 1rem 3rem;
+  margin: 1.5rem auto;
+  text-align: justify;
+}
+
+#post-header {
   position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 0 auto 3rem auto;
-  padding: 2rem;
   border-radius: 16px;
   background-color: #34623c;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
-#post-detail header .left-container {
+#bookmark {
+  position: absolute;
+  top: 0px;
+  right: 45px;
+  z-index: 999;
+}
+
+#bookmark button {
+  background-color: Transparent;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+
+#bookmark svg {
+  fill: #aaaaaa;
+  height: 30px;
+  transition: all 0.2s ease;
+}
+
+#bookmark.on svg,
+#bookmark svg:hover {
+  height: 45px;
+  fill: #e48900;
+}
+
+#post-header .left-container {
   max-width: 50rem;
 }
 
-#post-detail header h2 {
+#post-header h2 {
+  text-align: left;
   font-size: 4.5rem;
-  margin: 20px 0;
+  margin: 1.2rem 0;
 }
 
-#post-detail header h3 {
-  margin: 30px 0;
+#post-header h3 {
+  margin: 1.8rem 0;
 }
 
-#post-detail header .right-container {
+#post-header .right-container {
   padding: 1rem 2rem;
   border-radius: 12px;
   text-align: right;
 }
 
-#post-detail header img {
+#post-header .right-container img {
   width: 12rem;
   height: 12rem;
   border-radius: 12px;
@@ -45,21 +78,55 @@
   margin-bottom: 1rem;
 }
 
-#post-detail header address {
+#post-header address {
   font-weight: bold;
 }
 
-#post-detail header time {
+#post-header time {
   font-weight: bold;
 } 
 
-#post-detail section.post-content {
-  width: 90%;
-  max-width: 70rem;
-  margin: 3rem auto;
-  background-color: #3f4142;
-  padding: 1rem 4rem;
+#post-content,
+#post-comments {
+  background-color: #242424;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   font-size: 1.2rem;
+}
+
+#post-comments .comments-list {
+  margin: 1rem 0;
+  list-style: none;
+  padding: 0;  
+}
+
+#post-comments .comments-list li {
+  border: 1px solid #766e61;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+  font-size: 1.1rem;
+}
+
+#post-comments .comments-list p:last-of-type {
+  margin-bottom: 0;
+}
+
+#post-comments .comment-by {
+  font-weight: bold;
+}
+
+#post-comments .comment-on {
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+#comment-error {
+  border: 1px solid #680000;
+  background-color: #420003;
+  border-radius: 12px;
+}
+
+#comment-error h2 {
+  margin-top: 0px;
 }

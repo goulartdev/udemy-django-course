@@ -1,5 +1,6 @@
 from django.db import models
-from django.db.models.deletion import RESTRICT
+from django.db.models.deletion import RESTRICT, CASCADE
+from django.db.models.fields.related import ForeignKey
 from django.urls import reverse
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
@@ -9,10 +10,8 @@ from django.core.validators import MinLengthValidator
 class Author(models.Model):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=50)
-    # shortname = models.CharField(max_length=5)
     email = models.EmailField()
-    # welcome_mesage = models.TextField(max_length=150)
-    # about = models.TextField(max_length=300)
+    photo = models.ImageField(upload_to="authors")
 
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
@@ -23,6 +22,13 @@ class Author(models.Model):
 
 class Tag(models.Model):
     caption = models.CharField(max_length=20)
+    slug = models.SlugField(max_length=20, unique=True, blank=True)
+
+    def save(self, *args, **kwargs) -> None:
+        if not self.slug:
+            self.slug = slugify(self.caption)
+
+        return super().save(*args, **kwargs)
 
     def __str__(self):
         return self.caption
@@ -31,19 +37,19 @@ class Tag(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True, blank=True)
+    header_image = models.ImageField(upload_to="posts")
     excerpt = models.TextField(max_length=200)
     author = models.ForeignKey(Author, on_delete=RESTRICT, related_name="posts")
-    image_name = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now_add=True)
     content = models.TextField(validators=[MinLengthValidator(200)])
-    tags = models.ManyToManyField(Tag, related_name="tags")
+    tags = models.ManyToManyField(Tag, related_name="posts")
 
     class Meta:
         ordering = ["-date"]
         get_latest_by = ["-date"]
 
     def get_absolute_url(self):
-        return reverse("auto_now_add", kwargs={"slug": self.slug})
+        return reverse("post_detail", kwargs={"slug": self.slug})
 
     def get_tags(self):
         return ", ".join([tag.caption for tag in self.tags.all()])
@@ -56,6 +62,18 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class PostComment(models.Model):
+    post = models.ForeignKey(Post, on_delete=CASCADE, related_name="comments")
+    name = models.CharField(max_length=30)
+    email = models.EmailField(null=True, blank=True)
+    text = models.TextField(max_length=300)
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-date"]
+        get_latest_by = ["-date"]
 
 
 class Blog(models.Model):

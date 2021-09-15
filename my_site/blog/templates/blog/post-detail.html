@@ -4,6 +4,7 @@
 {% block css_files %}
   <link rel="stylesheet" href="{% static 'blog/css/post-detail.css' %}">
   <link rel="stylesheet" href="{% static 'blog/css/includes/tags.css' %}">
+  <link rel="stylesheet" href="{% static 'blog/css/includes/input.css' %}">
 {% endblock css_files %}
 
 {% block page_title %}{{ post.title }}{% endblock page_title %}
@@ -11,27 +12,78 @@
 {% block content %}
 
   <article id="post-detail">
-    <header>
+
+    {% if form.errors %}
+      <div id="comment-error">
+        <h2>Saving the comment failed!</h2>
+        <p>Please check the comment form below and fix the errors.</p>
+        <a href="#post-comments">Go to comments</a>
+      </div>
+    {% endif %}
+
+    <header id="post-header">
+
+      {% comment %} <form id="bookmark" action="{% url 'bookmark' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="post_id" value="{{ post.id }}">
+        {% include 'blog/includes/bookmark-icon' %}
+        <input type="image" class="{% if is_marked %}on{% endif %}" src="{% static 'blog/icons/bookmark.svg' %}" alt="Bookmark">
+      </form> {% endcomment %}
+
+      <form id="bookmark" class="{% if is_marked %}on{% endif %}" action="{% url 'bookmark' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="post_id" value="{{ post.id }}">
+        <button type="submit">
+          {% include 'blog/includes/bookmark-icon.html' %}
+        </button>
+      </form>
+
       <div class="left-container">
         <h2>{{ post.title }}</h2>
         <h3>{{ post.excerpt }}</h3>
-        <div class="post-tags">
-          {% include 'blog/includes/tags.html' %}
-        </div>
+        {% include 'blog/includes/tags.html' with tags=tags %}
       </div>
+
       <div class="right-container">
         <picture>
-          <img src="{% static 'blog/images/'|add:post.image_name %}" alt="{{ post.title }}">
+          <img src="{{ post.header_image.url }}" alt="{{ post.title }}">
         </picture>
         <address>By {{ post.author|title }}</address>
         <div>
-          Created on <time>{{ post.date|date:"d M Y" }}</time>
+          Created on <time>{{ post.date|date:"M d Y" }}</time>
         </div>
       </div>
+
     </header>
 
-    <section class="post-content">
-      <p>{{ post.content|linebreaksbr }}</p>        
+    <section id="post-content">
+      <p>{{ post.content|linebreaks }}</p>        
+    </section>
+
+    <section id="post-comments">
+      <h3>Comments</h3>
+      <form action="{% url 'post_detail' post.slug %}" method="POST">
+        {% csrf_token %}
+
+        {% for field in form  %}
+          {% include "blog/includes/input.html" %}
+        {% endfor %}
+
+        <button class="primary-button">Submit</button>
+      </form>
+
+      <ul class="comments-list">
+        {% for comment in comments %}
+          <li>
+            <div class="comment-header">
+              <span class="comment-by">{{ comment.name }}</span>
+              <span class="comment-on">on {{ comment.date|date:"M d Y h:i" }}</span>
+            </div>
+            <p>{{ comment.text }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+
     </section>
   </article>
 

@@ -1,0 +1,29 @@
+#posts-list {
+  width: 60rem;
+  margin: 0 auto;
+  padding-top: 7rem;
+  padding-bottom: 2rem;
+}
+
+#posts-list section {
+  padding: 2rem;
+  border-radius: 12px;
+  background-color: #242424;
+  box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.4);
+}
+
+#posts-list h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin: 0;
+  margin-bottom: 3rem;
+}
+
+#posts-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  gap: 1.5rem;
+}

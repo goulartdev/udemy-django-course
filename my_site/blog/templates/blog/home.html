@@ -13,7 +13,7 @@
 
   <section id="welcome">
     <header>
-      <img src="{% static 'blog/images/profile.jpg' %}" alt="{{ blog.author }} - the author of this blog">
+      <img src="{{ blog.author.photo.url }}" alt="{{ blog.author }} - the author of this blog">
       <h2>{{ blog.author.first_name }}'s Blog</h2>
     </header>
     <p>{{ blog.welcome_mesage }}</p>
@@ -22,15 +22,15 @@
   <section id="latest-posts">
     <h2>My Latest Thoughts</h2>
     <ul>
-      {% for post in posts%}
+      {% for post in posts %}
         <li>
           {% include 'blog/includes/post-card.html' with tags=post.tags.all %}
         </li>
       {% endfor %}
     </ul>
-    <div class="all-posts">
-      <a href="{% url 'all_posts' %}">All Posts</a>
-    </div>
+    <footer class="all-posts">
+      <a class="primary-button" href="{% url 'all_posts' %}">All Posts</a>
+    </footer>
   </section>
 
   <footer id="about">

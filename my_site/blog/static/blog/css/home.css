@@ -3,9 +3,15 @@
   box-shadow: none;
 }
 
+#about,
+#welcome {
+  padding: 3rem 23rem;
+}
+
 #welcome {
   background: linear-gradient(to right top, #427756, #34623c);
-  padding: 6rem 12%;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
 }
 
 #welcome header {
@@ -41,18 +47,19 @@
   padding: 2rem;
   margin: -5rem auto 0 auto;
   border-radius: 12px;
-  background-color: #3f4142;
+  background-color: #242424;
   box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.4);
 }
 
 #latest-posts h2 {
+  margin-top: 0px;
   text-align: center;
 }
 
 #latest-posts ul {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 3rem 0;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -65,37 +72,16 @@
 }
 
 #latest-posts .all-posts {
-  margin-top: 3rem;
   display: flex;
   justify-content: center;
-}
-
-#latest-posts .all-posts a {
-  width: 120px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #427756;
-  border-radius: 12px;
-  box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.4);
-  text-decoration: none;
-  font-weight: bold;
-  transition: all 0.2s ease;
 }
 
 #latest-posts .post-card:hover {
   background-color: #34623c;
 } 
 
-#latest-posts .all-posts a:hover, 
-#latest-posts .all-posts a:active {
-  color: #e48900
-}
-
 #about {
   text-align: center;
-  padding: 3rem 12%;
   background-color: #34623c;
   margin-top: 5rem;
 }
