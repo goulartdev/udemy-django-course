@@ -23,17 +23,6 @@ class Home(ListView):
         return data
 
 
-class AllPostsView(ListView):
-    template_name = "blog/posts-list.html"
-    model = Post
-    context_object_name = "posts"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["page_title"] = "All My Posts"
-        return context
-
-
 class PostDetailView(View):
     template_name = "blog/post-detail.html"
     model = Post
@@ -97,29 +86,43 @@ class BookmarkView(View):
         return HttpResponseRedirect(reverse("post_detail", args=[post.slug]))
 
 
-class TagView(DetailView):
+class AllPostsView(ListView):
     template_name = "blog/posts-list.html"
-    model = Tag
-    context_object_name = "tag"
+    model = Post
+    context_object_name = "posts"
+    paginate_by = 9
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["page_title"] = f"{self.object.caption} Posts"
-        context["posts"] = self.object.posts.all()
+        context["page_title"] = self.get_page_title()
 
         return context
 
+    def get_page_title(self):
+        return "All My Posts"
 
-class MyBookmarksView(View):
+
+class PostsByTagView(AllPostsView):
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        return queryset.filter(tags__slug=self.kwargs["slug"])
+
+    def get_page_title(self):
+        tag = self.kwargs["slug"]
+        return f"{tag} Posts"
+
+
+class MyBookmarksView(AllPostsView):
     template_name = "blog/posts-list.html"
 
-    def get(self, request):
-        context = {"page_title": "My Bookmarks", "posts": []}
-
-        bookmarks = request.session.get("bookmarks")
+    def get_queryset(self):
+        bookmarks = self.request.session.get("bookmarks")
 
         if bookmarks:
-            posts = Post.objects.filter(id__in=bookmarks)
-            context["posts"] = posts
+            return Post.objects.filter(id__in=bookmarks)
 
-        return render(request, self.template_name, context)
+        return []
+
+    def get_page_title(self):
+        return "My Bookmarks"
