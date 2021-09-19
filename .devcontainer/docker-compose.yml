@@ -8,6 +8,8 @@ services:
       dockerfile: Dockerfile
       args:
         VARIANT: 3.9
+    env_file:
+      - ../my_site/.env
     volumes: 
       - ..:/workspace:cached
     restart: unless-stopped

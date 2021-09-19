@@ -1,0 +1,1 @@
+zip -r dist.zip .ebextensions blog manage.py my_site requirements.txt staticfiles templates uploads

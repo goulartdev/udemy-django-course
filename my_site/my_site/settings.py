@@ -10,22 +10,30 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+from os import getenv
 from pathlib import Path
+
+ENV = getenv("ENV", "development")
+
+IS_DEVELOPMENT = ENV == "development"
+IS_TEST = ENV == "test"
+IS_PRODUCTION = ENV == "production"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-print(BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-1o%4co535w^ej+e14yy!hep7q9$^r9*l_)qc%uo0c(2^y(95l)"
+SECRET_KEY = getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = getenv("DEBUG", True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    getenv("APP_HOST", "localhost"),
+]
 
 
 # Application definition
@@ -77,13 +85,18 @@ WSGI_APPLICATION = "my_site.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+DB_ENGINE = getenv("DB_ENGINE", "sqlite3")
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": f"django.db.backends.{DB_ENGINE}",
+        "NAME": getenv("DB_NAME", BASE_DIR / "db.sqlite3"),
+        "USER": getenv("DB_USER"),
+        "PASSWORD": getenv("DB_PASSWORD"),
+        "HOST": getenv("DB_HOST"),
+        "PORT": getenv("DB_PORT"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -121,16 +134,36 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+STATICFILES_FOLDER = "staticfiles"
+MEDIAFILES_FOLDER = "uploads"
+
+# static root is used by jango to collect all static files from the project and copy to that path
+STATIC_ROOT = BASE_DIR / STATICFILES_FOLDER
 STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-MEDIA_ROOT = BASE_DIR / "uploads"
-MEDIA_URL = "/site-media/"
+MEDIA_ROOT = BASE_DIR / MEDIAFILES_FOLDER
+MEDIA_URL = "/files/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+STORAGE = getenv("STORAGE", "local")
+
+if IS_PRODUCTION:
+    INSTALLED_APPS += ["storages"]
+
+    AWS_STORAGE_BUCKET_NAME = getenv("AWS_STORAGE_BUCKET_NAME")
+    AWS_S3_REGION_NAME = getenv("AWS_S3_REGION_NAME")
+    AWS_ACCESS_KEY_ID = getenv("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = getenv("AWS_SECRET_ACCESS_KEY")
+    AWS_S3_DOMAIN = getenv("AWS_S3_DOMAIN")
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.{AWS_S3_DOMAIN}"
+
+    STATICFILES_STORAGE = "my_site.custom_storages.StaticFileStorage"
+    DEFAULT_FILE_STORAGE = "my_site.custom_storages.MediaFileStorage"
