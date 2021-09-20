@@ -3,9 +3,27 @@
     <li>
       <div class="book-list-header book-list-item">
         <div class="bestseller"></div>
-        <div class="title">Title</div>
-        <div class="author">Author</div>
-        <div class="book-rating">Rating</div>
+        <div class="title">
+          {% if order_by == 'title' %}
+            <a href="?order_by=-title&search_value={{ search_value }}">Title</a>
+          {% else %}
+            <a href="?order_by=title&search_value={{ search_value }}">Title</a>
+          {% endif %}
+        </div>
+        <div class="author">
+          {% if order_by == 'author' %}
+            <a href="?order_by=-author&search_value={{ search_value }}">Author</a>
+          {% else %}
+            <a href="?order_by=author&search_value={{ search_value }}">Author</a>
+          {% endif %}
+        </div>
+        <div class="book-rating">
+          {% if order_by == 'rating' %}
+            <a href="?order_by=-rating&search_value={{ search_value }}">Rating</a>
+          {% else %}
+            <a href="?order_by=rating&search_value={{ search_value }}">Rating</a>
+          {% endif %}
+        </div>
       </div>
     </li>
     {% for book in books %}
@@ -14,4 +32,21 @@
       </li>
     {% endfor %}
   </ul>
+
+  <div class="pagination">
+    {% if page_obj.has_previous %}
+      <a href="?page=1&order_by={{ order_by }}&search_value={{ search_value }}">&laquo; first</a>
+      <a href="?page={{ page_obj.previous_page_number }}&order_by={{ order_by }}&search_value={{ search_value }}">previous</a>
+    {% endif %}
+
+    <span class="current">
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    </span>
+
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}&order_by={{ order_by }}&search_value={{ search_value }}">next</a>
+      <a href="?page={{ page_obj.paginator.num_pages }}&order_by={{ order_by }}&search_value={{ search_value }}">last &raquo;</a>
+    {% endif %}
+  </div>
+
 </div>

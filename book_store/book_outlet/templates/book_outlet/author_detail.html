@@ -8,13 +8,13 @@
   <link rel="stylesheet" href="{% static 'book_outlet/css/includes/rating.css' %}">
 {% endblock page_styles %}
 
-{% block title %}{{ name }}{% endblock title %}
+{% block title %}{{ author.name }}{% endblock title %}
 
 {% block page_content %}
   <div id="author-detail">
-    <h1>{{ name }}</h1>
+    <h1>{{ author.name }}</h1>
 
-    <h3>Total of {{ number_of_books }} book with average rating of {{ average_rating|floatformat:2 }}</h2>
+    <h2>Total of {{ number_of_books }} book with average rating of {{ average_rating|floatformat:2 }}</h2>
 
     {% include 'book_outlet/includes/books_list.html' %}
 

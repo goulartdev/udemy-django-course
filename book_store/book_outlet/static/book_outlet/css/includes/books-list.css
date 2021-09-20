@@ -20,5 +20,13 @@
 }
 
 .books-list ul li:hover {
-  background-color: rgb(73, 117, 73);
+  background-color: #497549;
+}
+
+.books-list .pagination {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.5rem;
 }

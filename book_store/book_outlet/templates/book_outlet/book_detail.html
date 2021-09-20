@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="{% static 'book_outlet/css/includes/rating.css' %}">
 {% endblock page_styles %}
 
-{% block title %}{{ title }}{% endblock title %}
+{% block title %}{{ book.title }}{% endblock title %}
 
 {% block page_content %}
   <div id="book-detail">
@@ -14,18 +14,18 @@
     </picture>
     <div class="book-info">
       <h1>
-        {{ title }}{% if is_bestseller %}🔥{% endif %}
+        {{ book.title }}{% if book.is_bestseller %}🔥{% endif %}
       </h1>
 
       <h2>
-        by <a href="{{ author.get_absolute_url }}">{{ author }}</a>
+        by <a href="{{ book.author.get_absolute_url }}">{{ book.author }}</a>
       </h2>
       
       {% include 'book_outlet/includes/rating.html' %}
       
-      <h3>Price: ${{ price|floatformat:2 }}</h3>
+      <h3>Price: ${{ book.price|floatformat:2 }}</h3>
 
-      <p>{{ description|linebreaks }}</p>
+      <p>{{ book.description|linebreaks }}</p>
 
       <div class="back-home">
         <a href="{% url 'home' %}">Back to home</a>

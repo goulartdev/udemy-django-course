@@ -6,7 +6,15 @@
 }
 
 #author-detail h1 {
+  font-size: 30px;
   margin: 0;
+  margin-bottom: 30px;
+}
+
+#author-detail h2 {
+  font-size: 18px;
+  margin: 0;
+  margin-bottom: 15px;
 }
 
 #author-detail .back-home {

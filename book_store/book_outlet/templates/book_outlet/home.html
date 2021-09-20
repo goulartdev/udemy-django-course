@@ -12,10 +12,17 @@
 
 {% block page_content %}
 
-  <div id="home-content">
+  <section id="home-content">
     <h1>All Books</h1>
+
+    <form action="{% url 'home' %}" method="GET">
+      <input name="search_value" value="{{ search_value }}" type="text" placeholder="Search book">
+      <button>Search</button>
+    </form>
+
     <hr>
+
     {% include 'book_outlet/includes/books_list.html' %}
-  </div>
+  </section>
 
 {% endblock page_content %}
