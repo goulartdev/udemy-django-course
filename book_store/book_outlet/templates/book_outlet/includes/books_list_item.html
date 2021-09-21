@@ -1,9 +1,11 @@
 <div class="book-list-item">
 
   {% if book.is_bestseller %}
-    <div class="bestseller" title="Bestseller">🔥</div>
+    <div class="bestseller" title="Bestseller">
+      {% include 'book_outlet/includes/bestseller.html' %}
+    </div>
   {% else %}
-    <div class="bestseller" ></div>
+    <div class="bestseller"></div>
   {% endif %}
 
   <div class="title">
@@ -14,6 +16,6 @@
     <a href="{{ book.author.get_absolute_url }}">{{ book.author }}</a>
   </div>
 
-  {% include 'book_outlet/includes/rating.html' %}
+  {% include 'book_outlet/includes/rating.html' with rating=book.rating %}
 
 </div>

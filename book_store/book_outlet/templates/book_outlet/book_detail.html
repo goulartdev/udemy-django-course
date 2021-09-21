@@ -11,17 +11,21 @@
 {% block page_content %}
   <div id="book-detail">
     <picture>
+      <img src="{{ book.cover.url }}" alt="{{ book.title }}">
     </picture>
-    <div class="book-info">
+    <section class="book-info">
       <h1>
-        {{ book.title }}{% if book.is_bestseller %}🔥{% endif %}
+        {{ book.title }}
+        {% if book.is_bestseller %}
+          {% include 'book_outlet/includes/bestseller.html' %}
+        {% endif %}
       </h1>
 
       <h2>
         by <a href="{{ book.author.get_absolute_url }}">{{ book.author }}</a>
       </h2>
       
-      {% include 'book_outlet/includes/rating.html' %}
+      {% include 'book_outlet/includes/rating.html' with rating=book.rating %}
       
       <h3>Price: ${{ book.price|floatformat:2 }}</h3>
 
@@ -30,6 +34,6 @@
       <div class="back-home">
         <a href="{% url 'home' %}">Back to home</a>
       </div>
-    </div>
+    </section>
   </div>
 {% endblock page_content %}

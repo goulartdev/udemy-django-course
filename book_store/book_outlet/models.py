@@ -60,6 +60,7 @@ class Book(models.Model):
     description = models.TextField(max_length=1000, default="")
     price = models.FloatField(default=0)
     published_countries = models.ManyToManyField(Country)
+    cover = models.ImageField(upload_to="covers")
 
     def save(self, *args, **kwargs) -> None:
         if not self.slug:
