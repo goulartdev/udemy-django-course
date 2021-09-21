@@ -51,9 +51,6 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse("post_detail", kwargs={"slug": self.slug})
 
-    def get_tags(self):
-        return ", ".join([tag.caption for tag in self.tags.all()])
-
     def save(self, *args, **kwargs) -> None:
         if not self.slug:
             self.slug = slugify(self.title)

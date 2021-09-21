@@ -3,9 +3,8 @@ from django.shortcuts import get_object_or_404, render
 from django.urls.base import reverse
 from django.views.generic import CreateView, ListView
 from django.views import View
-from django.views.generic.detail import DetailView
 
-from .models import Post, PostComment, Tag
+from .models import Post, PostComment
 from .forms import AddCommentForm
 
 LATEST_POSTS_LIMIT = 3
@@ -27,6 +26,7 @@ class PostDetailView(View):
     template_name = "blog/post-detail.html"
     model = Post
     context_object_name = "post"
+    comments_limit = 5
 
     def get(self, request, slug):
         context = self.get_context(request, slug, AddCommentForm())
@@ -51,13 +51,24 @@ class PostDetailView(View):
     def get_context(self, request, slug, comment_form):
         post = get_object_or_404(Post, slug=slug)
 
+        comments_limit = self.get_comments_limit()
+        total_comments = post.comments.count()
+
         return {
             "post": post,
             "is_marked": post.id in request.session.get("bookmarks", []),
             "tags": post.tags.all(),
-            "comments": post.comments.all(),
+            "comments": post.comments.all()[:comments_limit],
             "form": comment_form,
+            "comments_limit": comments_limit,
+            "total_comments": total_comments,
         }
+
+    def get_comments_limit(self):
+        try:
+            return int(self.request.GET.get("comments_limit", self.comments_limit))
+        except ValueError:
+            return self.comments_limit
 
 
 class AddCommentView(CreateView):

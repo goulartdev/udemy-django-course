@@ -84,6 +84,16 @@
         {% endfor %}
       </ul>
 
+      <span id="comments-end-anchor"></span>
+
+      {% if comments_limit < total_comments  %}
+        <div class="load-more">
+          <a class="primary-button" href="?comments_limit={{ comments_limit|add:10 }}#comments-end-anchor">
+            Load more comments
+          </a>
+        </div>
+      {% endif %}
+
     </section>
   </article>
 
